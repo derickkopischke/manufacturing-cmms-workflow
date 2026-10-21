@@ -1,0 +1,13 @@
+Sample workflow complete. All equipment and requests are fictional.
+
+WORK REQUESTS
+ID | ASSET           | SUMMARY                               | REQUESTING GROUP | PRIORITY | STATUS     
+1  | DEMO-CAMERA-01  | Inspect a loose camera mount          | Maintenance      | High     | Closed     
+2  | DEMO-MOLD-02    | Inspect a mold locating pin           | Mold Shop        | Normal   | In Progress
+3  | DEMO-FURNACE-03 | Review a furnace door alignment issue | Melt Shop        | Normal   | On Hold    
+
+WORK ORDERS
+ID | REQUEST ID | ASSET           | ASSIGNED GROUP | STATUS     
+1  | 1          | DEMO-CAMERA-01  | Maintenance    | Closed     
+2  | 2          | DEMO-MOLD-02    | Mold Shop      | In Progress
+3  | 3          | DEMO-FURNACE-03 | Melt Shop      | On Hold    

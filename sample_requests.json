@@ -1,0 +1,20 @@
+[
+  {
+    "summary": "Inspect a loose camera mount",
+    "asset": "DEMO-CAMERA-01",
+    "requesting_group": "Maintenance",
+    "priority": "High"
+  },
+  {
+    "summary": "Inspect a mold locating pin",
+    "asset": "DEMO-MOLD-02",
+    "requesting_group": "Mold Shop",
+    "priority": "Normal"
+  },
+  {
+    "summary": "Review a furnace door alignment issue",
+    "asset": "DEMO-FURNACE-03",
+    "requesting_group": "Melt Shop",
+    "priority": "Normal"
+  }
+]
