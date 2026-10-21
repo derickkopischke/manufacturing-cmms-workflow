@@ -6,6 +6,22 @@ The focus is the logic behind the workflow. The application runs locally in a te
 
 This is a standalone portfolio demonstration using fictional equipment and requests. It is inspired by my manufacturing and CMMS experience; it contains no employer system exports or production records.
 
+## Try the browser app and reporting demo
+
+[Open the interactive CMMS demo](https://derick-kopischke.fitsky18.chatgpt.site/cmms-demo/)
+
+The repository also includes a JavaScript simulation of a Power Apps maintenance workflow and Power BI reporting concept. Submit requests, create linked work orders, record completion and downtime, and generate daily, weekly or monthly reports with department filters and CSV downloads.
+
+The browser demo uses fictional records and runs independently of Microsoft services. [Browser source and tests](browser-demo/) and [Power Fx / DAX reference examples and fictional Power BI import files](microsoft-examples/) are included. The Microsoft examples are not a published app, a .pbix file, or a tenant-validated deployment.
+
+Run the browser checks with Node.js 18 or newer:
+
+```sh
+node --test browser-demo/engine.test.mjs
+```
+
+The Python and SQLite workflow below remains a separate runnable demonstration.
+
 ## Try the sample workflow
 
 Install Python 3.12 or newer with SQLite support. This version was tested with Python 3.12. Download this repository using **Code → Download ZIP**, extract it, and open a terminal in the extracted folder. Alternatively, clone the repository:
@@ -90,3 +106,4 @@ The checks exercise linked status synchronization, duplicate-order prevention, i
 I'm interested in practical software for manufacturing, including maintenance workflows, production information, and tools that reduce repetitive work.
 
 [Professional portfolio](https://derick-kopischke.fitsky18.chatgpt.site) · [GitHub profile](https://github.com/derickkopischke) · [LinkedIn](https://www.linkedin.com/in/derick-kopischke-84654b2ab/)
+

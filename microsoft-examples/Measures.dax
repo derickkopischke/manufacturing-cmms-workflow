@@ -1,0 +1,55 @@
+// Reference formulas; add EACH named expression separately in Power BI Desktop.
+// Not a .pbix, calculated-table import script, or validated semantic model.
+// Import Requests.csv and WorkOrders.csv; convert timestamps to UTC datetime.
+// Keep ReportDates DISCONNECTED from both fact tables. Department filtering uses
+// one Department dimension with 1:* single-direction relationships to each fact.
+// ReportDates selections must be contiguous: single day, full Mon-Sun week or month.
+
+// CALCULATED TABLE
+ReportDates = CALENDAR(DATE(2026, 9, 1), DATE(2026, 10, 21))
+
+// MEASURES
+Demo as of = DATE(2026, 10, 21) + TIME(17, 0, 0)
+
+Period start = MIN(ReportDates[Date])
+
+Period end exclusive =
+MIN(MAX(ReportDates[Date]) + 1, [Demo as of] + TIME(0, 0, 1))
+
+Requests submitted =
+VAR StartAt = [Period start]
+VAR EndAt = [Period end exclusive]
+RETURN COALESCE(COUNTROWS(FILTER(Requests,
+    Requests[SubmittedAt] >= StartAt && Requests[SubmittedAt] < EndAt)), 0)
+
+Work orders closed =
+VAR StartAt = [Period start]
+VAR EndAt = [Period end exclusive]
+RETURN COALESCE(COUNTROWS(FILTER(WorkOrders,
+    NOT ISBLANK(WorkOrders[ClosedAt]) &&
+    WorkOrders[ClosedAt] >= StartAt && WorkOrders[ClosedAt] < EndAt)), 0)
+
+Open work orders =
+VAR EndAt = [Period end exclusive]
+RETURN COALESCE(COUNTROWS(FILTER(WorkOrders,
+    WorkOrders[CreatedAt] < EndAt &&
+    (ISBLANK(WorkOrders[ClosedAt]) || WorkOrders[ClosedAt] >= EndAt))), 0)
+
+Overdue work orders =
+VAR EndAt = [Period end exclusive]
+VAR DueCutoff = MIN(EndAt, [Demo as of])
+RETURN COALESCE(COUNTROWS(FILTER(WorkOrders,
+    WorkOrders[CreatedAt] < EndAt && WorkOrders[DueAt] < DueCutoff &&
+    (ISBLANK(WorkOrders[ClosedAt]) || WorkOrders[ClosedAt] >= EndAt))), 0)
+
+Recorded downtime minutes =
+VAR StartAt = [Period start]
+VAR EndAt = [Period end exclusive]
+RETURN COALESCE(SUMX(FILTER(WorkOrders,
+    NOT ISBLANK(WorkOrders[ClosedAt]) &&
+    WorkOrders[ClosedAt] >= StartAt && WorkOrders[ClosedAt] < EndAt),
+    WorkOrders[DowntimeMinutes]), 0)
+
+// Do not call recorded downtime equipment uptime or MTTR. It is attributed to
+// the order close date. Historical status categories require event history,
+// not the current RequestStatus column in a snapshot table.
